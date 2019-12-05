@@ -146,9 +146,8 @@ h3.docleg > span::before{
                           <input type="text" name="PONumber" data-parsley-trigger="keyup" required="true" placeholder="P.O No / W.O No" class="form-control required">
                         </div> 
                         <div class="multiple-puchaseorder-no col-sm-6" >
-                          <span class="col-sm-6"><input type="text" name="PONumber" data-parsley-trigger="keyup" required="true" placeholder="P.O No / W.O No" class="form-control required"></span>
-                          <!-- <div icon mdi mdi-plus-square input-add> 
-                          </div> -->
+                         <input type="text" name="PONumber[]" data-parsley-trigger="keyup" required="true" placeholder="P.O No / W.O No" class="form-control required">
+                         <i class="icon mdi mdi-plus-square input-add"></i>
                         </div> 
                       </div>
                       <div class="form-group">
@@ -582,10 +581,20 @@ h3.docleg > span::before{
           $('#materialUnchecked').removeAttr("disabled");
         }
       });
-
+      var i=1;
+      var input= '<div class="col-sm-6 remove_field" ><input type="text" name="PONumber[]" data-parsley-trigger="keyup" required="true" placeholder="P.O No / W.O No" class="form-control required"><i class="icon mdi mdi-minus-square"></i></div>'
       $('.input-add').on("click",function(){
-        $('.multiple-puchaseorder-no').add();
+        if(i<10){
+          i++;
+          $('.multiple-puchaseorder-no').append(input);
+        }
       })
+
+      $('.multiple-puchaseorder-no').on('click', '.remove_field', function(e){
+        e.preventDefault();
+        $(this).remove();
+        i--;
+      });
 
     });
     </script>
