@@ -134,8 +134,21 @@ h3.docleg > span::before{
                     <div data-step="1" class="step-pane active">
                       <div class="form-group">
                         <label class="col-sm-3 control-label">P.O No / W.O No <span style="color: #ff0000">*</span></label>
-                        <div class="col-sm-6">
+                        <div class=" col-sm-6 form-check">
+                          <input type="checkbox" class="form-check-input" id="materialUnchecked">
+                          <label class="form-check-label" for="materialUnchecked">Single P/O</label>
+                          <div class=" col-sm-6 form-check">
+                          <input type="checkbox" class="form-check-input" id="materialUnchecked1">
+                          <label class="form-check-label" for="materialUnchecked">Multiple P/O Numbers</label>
+                          </div>
+                        </div>
+                        <div class="puchaseorder-no col-sm-6" >
                           <input type="text" name="PONumber" data-parsley-trigger="keyup" required="true" placeholder="P.O No / W.O No" class="form-control required">
+                        </div> 
+                        <div class="multiple-puchaseorder-no col-sm-6" >
+                          <span class="col-sm-6"><input type="text" name="PONumber" data-parsley-trigger="keyup" required="true" placeholder="P.O No / W.O No" class="form-control required"></span>
+                          <!-- <div icon mdi mdi-plus-square input-add> 
+                          </div> -->
                         </div> 
                       </div>
                       <div class="form-group">
@@ -546,6 +559,33 @@ h3.docleg > span::before{
           }
           $('.be-loading').addClass('be-loading-active');
       }); 
+      
+      $('.puchaseorder-no').hide();
+
+      $("#materialUnchecked").change(function() {
+        if(this.checked) {
+          $('.puchaseorder-no').show();
+          $('#materialUnchecked1').attr("disabled",true);
+        } else {
+          $('.puchaseorder-no').hide();
+          $('#materialUnchecked1').removeAttr("disabled");
+        }
+      });
+
+      $('.multiple-puchaseorder-no').hide();
+      $("#materialUnchecked1").change(function() {
+        if(this.checked) {
+          $('.multiple-puchaseorder-no').show();
+          $('#materialUnchecked').attr("disabled",true);
+        } else {
+          $('.multiple-puchaseorder-no').hide();
+          $('#materialUnchecked').removeAttr("disabled");
+        }
+      });
+
+      $('.input-add').on("click",function(){
+        $('.multiple-puchaseorder-no').add();
+      })
 
     });
     </script>
