@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
+	'hostname' => 'localhost:8889',
 	'username' => 'root',
-	'password' => 'Admin@123',
-	'database' => 'ezdockbook',
+	'password' => 'root',
+	'database' => 'satsez',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
