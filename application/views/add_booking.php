@@ -145,10 +145,10 @@ h3.docleg > span::before{
                         <div class="puchaseorder-no col-sm-6" >
                           <input type="text" name="PONumber" data-parsley-trigger="keyup" required="true" placeholder="P.O No / W.O No" class="form-control required">
                         </div> 
-                        <div class="multiple-puchaseorder-no col-sm-6" >
-                         <input type="text" name="PONumber[]" data-parsley-trigger="keyup" required="true" placeholder="P.O No / W.O No" class="form-control required">
+                        <!-- <div class="multiple-puchaseorder-no col-sm-6" >
+                         <input type="text" name="PONumber" data-parsley-trigger="keyup" required="true" placeholder="P.O No / W.O No" class="form-control required">
                          <i class="icon mdi mdi-plus-square input-add"></i>
-                        </div> 
+                        </div>  -->
                       </div>
                       <div class="form-group">
                         <label class="col-sm-3 control-label">D.o Number</label>
@@ -294,8 +294,13 @@ h3.docleg > span::before{
                             </div>
                           </div>
                           <div class="col-sm-3">
-                             <input readonly="true" type="text" id="CheckOut" name="CheckOutDate" placeholder="Check-Out Time" class="form-control">
+                            <div data-start-view="2" data-date-hour-disabled="<?php echo implode(', ', $disabledHours); ?>" data-date-format="yyyy-mm-dd hh:00" class="input-group date checkintime">
+                              <input size="16" readonly="true" required="true" data-parsley-trigger="keyup" type="text" id="CheckIn" name="CheckInDate" placeholder="Check-In Time" class="form-control"><span class="input-group-addon btn btn-primary"><i class="icon-th mdi mdi-calendar"></i></span>
+                            </div>
                           </div>
+                          <!-- <div class="col-sm-3">
+                             <input readonly="true" type="text" id="CheckOut" name="CheckOutDate" placeholder="Check-Out Time" class="form-control">
+                          </div> -->
                         </div>
                         <!-- <div class="form-group">
                           <label class="col-sm-3 control-label">Building Address</label>
@@ -571,30 +576,30 @@ h3.docleg > span::before{
         }
       });
 
-      $('.multiple-puchaseorder-no').hide();
-      $("#materialUnchecked1").change(function() {
-        if(this.checked) {
-          $('.multiple-puchaseorder-no').show();
-          $('#materialUnchecked').attr("disabled",true);
-        } else {
-          $('.multiple-puchaseorder-no').hide();
-          $('#materialUnchecked').removeAttr("disabled");
-        }
-      });
-      var i=1;
-      var input= '<div class="col-sm-6 remove_field" ><input type="text" name="PONumber[]" data-parsley-trigger="keyup" required="true" placeholder="P.O No / W.O No" class="form-control required"><i class="icon mdi mdi-minus-square"></i></div>'
-      $('.input-add').on("click",function(){
-        if(i<10){
-          i++;
-          $('.multiple-puchaseorder-no').append(input);
-        }
-      })
+      // $('.multiple-puchaseorder-no').hide();
+      // $("#materialUnchecked1").change(function() {
+      //   if(this.checked) {
+      //     $('.multiple-puchaseorder-no').show();
+      //     $('#materialUnchecked').attr("disabled",true);
+      //   } else {
+      //     $('.multiple-puchaseorder-no').hide();
+      //     $('#materialUnchecked').removeAttr("disabled");
+      //   }
+      // });
+      // var i=1;
+      // var input= '<div class="col-sm-6 remove_field" ><input type="text" name="PONumber[]" data-parsley-trigger="keyup" required="true" placeholder="P.O No / W.O No" class="form-control required"><i class="icon mdi mdi-minus-square"></i></div>'
+      // $('.input-add').on("click",function(){
+      //   if(i<10){
+      //     i++;
+      //     $('.multiple-puchaseorder-no').append(input);
+      //   }
+      // })
 
-      $('.multiple-puchaseorder-no').on('click', '.remove_field', function(e){
-        e.preventDefault();
-        $(this).remove();
-        i--;
-      });
+      // $('.multiple-puchaseorder-no').on('click', '.remove_field', function(e){
+      //   e.preventDefault();
+      //   $(this).remove();
+      //   i--;
+      // });
 
     });
     </script>
