@@ -165,7 +165,7 @@
             <ul class="steps" style="margin-left: 0">
               <li data-step="1" class="active">Booking Info<span class="chevron"></span></li>
             </ul>
-            <form action="<?php echo base_url('Booking/save'); ?>" class="form-horizontal" method="post" enctype="multipart/form-data">
+            <form action="<?php echo base_url('Booking/saveMultiple'); ?>" class="form-horizontal" method="post" enctype="multipart/form-data">
               <div class="step-content">
                 <input type="hidden" name="VType" id="pVType">
                 <div data-step="1" class="step-pane active">
@@ -297,6 +297,7 @@
                           <tr>
                             <th>Purchase order No</th>
                             <th>CheckIn/CheckOut Datetime</th>
+                            <th>DockType</th>
                             <th>Action</th>
                           </tr>
                         </thead>
@@ -306,7 +307,7 @@
                           </tr>
                         </tbody>
                       </table>
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"> + </button>
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="add-pono" disabled> + </button>
                     </div>
                   </div>
                   <!-- <div class="form-group add-field">
@@ -411,26 +412,8 @@
           checkout = moment(chkdate).format("YYYY-MM-DD HH:mm");
           $('#CheckOut').val(checkout);
           var checkInVal = $('#CheckIn').val();
-          var formDataObj = new FormData();
-          formDataObj.append('SlotType', $('#SlotType').val());
-          formDataObj.append('Mode', $('#Mode').val());
-          formDataObj.append('BuildingName', $('#BuildingName').val());
-          formDataObj.append('CheckIn', checkInVal);
-
-          $.ajax({
-            type: 'POST',
-            url: 'getAvailableDocks',
-            data: formDataObj,
-            contentType: false,
-            processData: false,
-            beforeSend: function() {
-              $('.be-loading').addClass('be-loading-active');
-            },
-            success: function(data) {
-              $('.be-loading').removeClass('be-loading-active');
-              $('#pono-available-docks').html(data);
-            }
-          });
+          if (checkInVal !== '')
+            showDockTypes();
         });
 
         Date.prototype.addHours = function(h) {
@@ -438,30 +421,6 @@
           return this;
         }
 
-        $('#SlotType').change(function() {
-          CheckIn = $('#CheckIn').val();
-          datas = new FormData();
-          datas.append('SlotType', $('#SlotType').val());
-          datas.append('Mode', $('#Mode').val());
-          datas.append('BuildingName', $('#BuildingName').val());
-          datas.append('CheckIn', CheckIn);
-
-          $.ajax({
-            type: 'POST',
-            url: 'getAvailableDocks',
-            data: datas,
-            contentType: false,
-            processData: false,
-            beforeSend: function() {
-              $('.be-loading').addClass('be-loading-active');
-            },
-            success: function(data) {
-              $('#AvailableDocks').empty();
-              $('.be-loading').removeClass('be-loading-active');
-              $('#AvailableDocks').html(data);
-            }
-          });
-        });
 
         $('#VNumber').change(function() {
           datas = new FormData();
@@ -535,9 +494,10 @@
 
 
         $('form').submit(function() {
-          if ($('.freeslots:checkbox:checked').length < 1) {
+          var ponoInfo = $('#pono-table-3 tbody tr');
+          if (ponoInfo.length < 2) {
             $.gritter.add({
-              title: 'Please select dock',
+              title: 'Please Add P.O No & Datetime Selection',
               time: 1000,
               class_name: "color danger"
             });
@@ -545,34 +505,86 @@
           }
           $('.be-loading').addClass('be-loading-active');
         });
-
-        // Add po no
-        $('#save-add-pono').on('click', function() {
-          var poNumber = $('[name="PONumber"').val();
-          var checkInTime = $('#CheckIn').val();
-          var checkOutTime = $('#CheckOut').val();
-          var tableRow = '<tr>';
-          tableRow += '<td class="pono-td">' + poNumber + '</td>';
-          tableRow += '<td class="checkin-checkout-td">' + checkInTime + ' - ' + checkOutTime + '</td>';
-          tableRow += '<td>';
-          tableRow += '<button type="button" class="btn btn-primary edit-pono" data-toggle="modal" data-target="#exampleModal"> Edit </button>';
-          tableRow += '<button type="button" class="btn btn-primary delete-pono" style="margin-left:10px"> Delete </button>';
-          tableRow += '</td>';
-          tableRow += '</tr>';
-          if (poNumber !== '' && checkInTime !== '' && checkOutTime !== '') {
-            $('#pono-table-3 tbody').prepend(tableRow);
-            $('.no-pono').hide();
+        $('#SlotType').change(function() {
+          var slotTypeVal = $(this).val();
+          if (slotTypeVal || slotTypeVal !== '') {
+            $('#add-pono').prop('disabled', false);
+          } else {
+            $('#add-pono').prop('disabled', true);
           }
         });
+        // Add po no
+        $('#save-add-pono').on('click', function(e) {
+          $('#add-pono-form').parsley().validate();
+          if ($('#add-pono-form').parsley().isValid()) {
+            var isEditActive = $('#pono-table-3 .pono-edit-active');
+            var poNumber = $('[name="PONumber"').val();
+            var checkInTime = $('#CheckIn').val();
+            var checkOutTime = $('#CheckOut').val();
+            var dockType = '';
+            $.each($('input[name="Docks[]"]:checked'), function() {
+              dockType = $(this).val();
+            });
+            if (!dockType) {
+              alert('Please select Dock Information');
+              return false;
+            }
+
+            var dockLabel = $('label[for="docsk' + dockType + '"]').text();
+            var tableRow = '<tr>';
+            tableRow += '<td class="pono-td">' + poNumber + '</td>';
+            tableRow += '<input type="hidden" value="' + poNumber + '" name="poNumber[]"/>';
+            tableRow += '<td class="checkin-checkout-td">' + checkInTime + ' - ' + checkOutTime;
+            tableRow += '<input type="hidden" value="' + checkInTime + '" name="checkinTime[]"/>';
+            tableRow += '</td>';
+            tableRow += '<td class="docktype-td">' + dockLabel;
+            tableRow += '<input type="hidden" value="' + dockType + '" name="dockType[]"/>';
+            tableRow += '</td>';
+            tableRow += '<td>';
+            tableRow += '<button type="button" class="btn btn-primary edit-pono" data-toggle="modal" data-target="#exampleModal"> Edit </button>';
+            tableRow += '<button type="button" class="btn btn-primary delete-pono" style="margin-left:10px"> Delete </button>';
+            tableRow += '</td>';
+            tableRow += '</tr>';
+            if (poNumber !== '' && checkInTime !== '' && checkOutTime !== '') {
+              if (isEditActive.length > 0) {
+                isEditActive.replaceWith(tableRow);
+              } else {
+                $('#pono-table-3 tbody').prepend(tableRow);
+              }
+
+              $('.no-pono').hide();
+            }
+
+          } else {
+            e.stopPropagation();
+          }
+
+        });
+        $('#close-add-pono').on('click', function() {
+          $('#pono-table-3 .pono-edit-active').removeClass('pono-edit-active');
+        });
+        $('#add-pono').on('click', function() {
+          $('#pono-table-3 .pono-edit-active').removeClass('pono-edit-active');
+          $('[name="PONumber"').val('');
+          $('#CheckIn').val('');
+          $('#CheckOut').val('');
+          $('#pono-available-docks').empty();
+        });
+
         $('#pono-table-3').on('click', '.edit-pono', function() {
+          $('#pono-table-3 .pono-edit-active').removeClass('pono-edit-active');
           var trEle = $(this).parents('tr');
+          trEle.addClass('pono-edit-active');
           var cIOEle = $(trEle).find('.checkin-checkout-td').text();
           var cIOArr = cIOEle.split(' - ');
           var poNumber = $(trEle).find('.pono-td').text();
+          var dockType = $(trEle).find('[name="dockType[]"]').val();
           $('[name="PONumber"').val(poNumber);
           $('#CheckIn').val(cIOArr[0]);
           $('#CheckOut').val(cIOArr[1]);
+          showDockTypes(dockType);
         });
+
         $('#pono-table-3').on('click', '.delete-pono', function() {
           var trEle = $(this).parents('tr');
           trEle.remove();
@@ -582,5 +594,33 @@
             }
           }, 100)
         });
+
+        function showDockTypes(selectedVal) {
+          var CheckIn = $('#CheckIn').val();
+          var datas = new FormData();
+          datas.append('SlotType', $('#SlotType').val());
+          datas.append('Mode', $('#Mode').val());
+          datas.append('BuildingName', $('#BuildingName').val());
+          datas.append('CheckIn', CheckIn);
+
+          $.ajax({
+            type: 'POST',
+            url: 'getAvailableDocks',
+            data: datas,
+            contentType: false,
+            processData: false,
+            beforeSend: function() {
+              $('.be-loading').addClass('be-loading-active');
+            },
+            success: function(data) {
+              $('#pono-available-docks').empty();
+              $('.be-loading').removeClass('be-loading-active');
+              $('#pono-available-docks').html(data);
+              if (selectedVal) {
+                $('#dockslots-div').find('[value="' + selectedVal + '"]').attr('checked', true)
+              }
+            }
+          });
+        }
       });
     </script>
