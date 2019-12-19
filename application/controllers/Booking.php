@@ -135,8 +135,8 @@ class Booking extends CI_Controller
     $data['mode'] = $this->Common_model->getTableData('bookingmode','Active');
     $data['area'] = $this->Common_model->getTableData('area','Active');
     $data['supplierGroupInfo'] = $this->Common_model->getSupplierById($this->session->userdata('SupplierGroupID'));
-
-    $this->load->view('add_booking',$data);
+    $this->load->view('booking_details',$data);
+    // $this->load->view('add_booking',$data);
   }
 
   function BPrint($refno)

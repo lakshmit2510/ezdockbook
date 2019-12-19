@@ -121,7 +121,25 @@
   .docklegend>span.select::before {
     background: #11ca11;
   }
+
+  #pono-available-docks {
+    clear: both;
+    position: relative;
+    padding-top: 20px;
+  }
+
+  #pono-available-docks .border-dotted {
+    padding: 40px 25px !important;
+  }
+
+  #pono-available-docks .docklegend {
+    width: auto;
+    position: absolute;
+    right: 0;
+    top: 60px;
+  }
 </style>
+
 <div class="be-content">
   <div class="main-content container-fluid">
 
@@ -146,39 +164,30 @@
           <div id="wizard1" class="wizard wizard-ux no-steps-container">
             <ul class="steps" style="margin-left: 0">
               <li data-step="1" class="active">Booking Info<span class="chevron"></span></li>
-              <li data-step="2">Select Time & Dock Information<span class="chevron"></span></li>
-              <li data-step="3">Docks Selection<span class="chevron"></span></li>
             </ul>
             <form action="<?php echo base_url('Booking/save'); ?>" class="form-horizontal" method="post" enctype="multipart/form-data">
               <div class="step-content">
                 <input type="hidden" name="VType" id="pVType">
                 <div data-step="1" class="step-pane active">
-                  <div class="form-group add-field">
-                    <label class="col-sm-3 control-label">P.O No / W.O No <span style="color: #ff0000">*</span></label>
-                    <div class="col-sm-6">
-                      <input type="text" name="PONumber" data-parsley-trigger="keyup" required="true" placeholder="P.O No / W.O No" class="form-control required">
-                    </div>
-                    <button type="button" class="btn btn-primary input-add"> + </button>
-                  </div>
-                  <div class="form-group">
+                  <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">D.o Number</label>
                     <div class="col-sm-6">
                       <input type="text" name="DONumber" placeholder="D.o Number" class="form-control">
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">Airway Bill No</label>
                     <div class="col-sm-6">
                       <input type="text" name="BillNo" placeholder="Airway Bill No" class="form-control">
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">B/L No</label>
                     <div class="col-sm-6">
                       <input type="text" name="BLNo" placeholder="B/L No" class="form-control">
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">Company (Delivery To) <span style="color: #ff0000">*</span></label>
                     <div class="col-sm-6">
                       <select class="form-control required" required="true" name="DeliveryTo">
@@ -191,32 +200,16 @@
                       </select>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">Building Name <span style="color: #ff0000">*</span></label>
                     <div class="col-sm-6">
                       <select name="BuildingName" data-parsley-trigger="keyup" required="true" id="BuildingName" class="form-control dockselect required">
                         <option value="">--- Choose Building ---</option>
                         <option value="ICC1 - Admin">Inflight Catering Centre 1 (ICC1)</option>
-                        <!-- <option value="ICC1 - Production">Inflight Catering  Centre 2 (ICC2) - Production</option>
-                              <option value="ICC2 - APS">Inflight Catering  Centre 2 (ICC2) - APS</option>
-                              <option value="ICC2 - SATS CATERING">Inflight Catering  Centre 2 (ICC2) - SATS CATERING</option> -->
                       </select>
                     </div>
                   </div>
-                  <!-- <div class="form-group">
-                       <label class="col-sm-3 control-label">Operations</label>
-                       <div class="col-sm-6">
-                        <select class="form-control" required="true" name="Area">
-                          <option value="">--- Choose Operations ----</option>
-                          <?php
-                          foreach ($area as $key => $value) {
-                            echo '<option value="' . $value->AreaID . '">' . $value->Area . '</option>';
-                          }
-                          ?>
-                        </select>
-                       </div>
-                     </div> -->
-                  <div class="form-group">
+                  <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">Vehicle Number <span style="color: #ff0000">*</span></label>
                     <div class="col-sm-6">
                       <select class="form-control required" data-parsley-trigger="keyup" required="true" id="VNumber" name="VNumber">
@@ -229,13 +222,7 @@
                       </select>
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label class="col-sm-3 control-label">Vehicle Type</label>
-                    <div class="col-sm-6">
-                      <input type="text" id="VType" class="form-control" readonly="true">
-                    </div>
-                  </div>
-                  <div class="form-group">
+                  <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">Driver Name <span style="color: #ff0000">*</span></label>
                     <div class="col-sm-6">
                       <select class="form-control required" required="true" id="Driver" name="Driver">
@@ -248,90 +235,27 @@
                       </select>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">Vehicle Type</label>
+                    <div class="col-sm-6">
+                      <input type="text" id="VType" class="form-control" readonly="true">
+                    </div>
+                  </div>
+                  <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">Driver NRIC/FIN</label>
                     <div class="col-sm-6">
                       <input type="text" name="NRIC" id="NRIC" readonly="true" class="form-control">
                     </div>
                   </div>
                   <!--Upload file input-->
-                  <div class="form-group">
+                  <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">Attatch Documents</label>
                     <div class="col-sm-6">
                       <input type="file" name="upload_file" multiple />
                     </div>
                   </div>
-                  <?php if ($this->session->userdata('Role') == 1) { ?>
-                    <input type="hidden" value="Internal" name="UserType">
-                    <!-- <div class="form-group">
-                      <label class="col-sm-3 control-label">User Type</label>
-                      <div class="col-sm-6">
-                        <select class="form-control" required="true" name="UserType">
-                          <option value="Internal">Internal</option>
-                          <option value="External">External</option>
-                        </select>
-                      </div>
-                    </div> -->
-                  <?php } else {
-                    echo '<input type="hidden" name="UserType" value="' . $this->session->userdata('UserType') . '">';
-                  } ?>
 
-                  <div class="form-group">
-                    <div class="col-sm-offset-5 col-sm-10" style="padding: 15px 0;">
-                      <a href="<?php echo base_url('Booking'); ?>" class="btn btn-space btn-default">Cancel</a>
-                      <button data-wizard="#wizard1" class="btn btn-primary btn-space wizard-next">Next Step</button>
-                    </div>
-                  </div>
-                </div>
-                <div data-step="2" class="step-pane">
-                  <?php
-                  $disabledHours = [];
-                  $x = 0;
-                  if ($supplierGroupInfo[0]->AvailableTimings != '') {
-                    while ($x <= 24) {
-                      $availableTimings = explode(',', $supplierGroupInfo[0]->AvailableTimings);
-
-                      if (count($availableTimings) > 0 && !in_array($x, $availableTimings)) {
-                        array_push($disabledHours, $x);
-                      }
-                      $x++;
-                    }
-                  }
-                  ?>
-                  <div class="form-group">
-                    <label class="col-sm-3 control-label">Chech-In & Check-Out Time <span style="color: #ff0000">*</span></label>
-                    <div class="datetime-field">
-                      <div class="col-sm-3">
-                        <div data-start-view="2" data-date-hour-disabled="<?php echo implode(', ', $disabledHours); ?>" data-date-format="yyyy-mm-dd hh:00" class="input-group date checkintime">
-                          <input size="16" readonly="true" required="true" data-parsley-trigger="keyup" type="text" id="CheckIn" name="CheckInDate" placeholder="Check-In Time" class="form-control"><span class="input-group-addon btn btn-primary"><i class="icon-th mdi mdi-calendar"></i></span>
-                        </div>
-                      </div>
-                      <div class="col-sm-3">
-                        <input readonly="true" type="text" id="CheckOut" name="CheckOutDate" placeholder="Check-Out Time" class="form-control">
-                      </div>
-                    </div>
-                    <button type="button" class="btn btn-primary add-datetime"> + </button>
-                  </div>
-                  <!-- <div class="form-group">
-                          <label class="col-sm-3 control-label">Building Address</label>
-                          <div class="col-sm-6">
-                            <textarea class="form-control" rows="3" name="Address" placeholder="Address here..."></textarea>
-                          </div>
-                        </div> -->
-                  <div class="form-group">
-                    <label class="col-sm-3 control-label">Booking Mode</label>
-                    <div class="col-sm-6">
-                      <select class="form-control dockselect" name="Mode" id="Mode">
-                        <option value="">--- Choose Mode ----</option>
-                        <?php
-                        foreach ($mode as $key => $value) {
-                          echo '<option value="' . $value->ModeID . '">' . $value->Mode . '</option>';
-                        }
-                        ?>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
+                  <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">Docks Type <span style="color: #ff0000">*</span></label>
                     <div class="col-sm-3">
                       <select class="form-control" required="true" data-parsley-trigger="keyup" name="SlotType" id="SlotType">
@@ -358,14 +282,55 @@
                       <input type="hidden" id="SlotNos" name="SlotNos" value="1">
                     </div>
                   </div>
-                  <div class="form-group">
-                    <div class="col-sm-offset-5 col-sm-10" style="padding: 15px 0;">
-                      <button data-wizard="#wizard1" class="btn btn-default btn-space wizard-previous">Previous</button>
-                      <button data-wizard="#wizard1" class="btn btn-primary btn-space wizard-next">Next Step</button>
+
+                  <div class="row">
+                    <div class="card-body" style="margin-top: 30px;">
+                      <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                          <a class="nav-link active" data-toggle="tab" href="">P.O No & Datetime Selection<span style="color: red;margin-left: 5px;font-size: 15px;">*</span></a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="tab-content">
+                      <table id="pono-table-3" class="table table-striped table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Purchase order No</th>
+                            <th>CheckIn/CheckOut Datetime</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr class="no-pono">
+                            <td colspan="3">Please click on Plus botton to add Po Number.</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"> + </button>
                     </div>
                   </div>
-                </div>
-                <div data-step="3" class="step-pane">
+                  <!-- <div class="form-group add-field">
+                        <label class="col-sm-3 control-label">P.O No / W.O No <span style="color: #ff0000">*</span></label>
+                        <div class="multiple-puchaseorder-no col-sm-6" >
+                            <input type="text" name="PONumber[]" data-parsley-trigger="keyup" required="true" placeholder="P.O No / W.O No" class="form-control required">
+                        </div> 
+                        <button type="button" class="btn btn-primary input-add"> + </button>
+                    </div> -->
+
+                  <?php if ($this->session->userdata('Role') == 1) { ?>
+                    <input type="hidden" value="Internal" name="UserType">
+                  <?php } else {
+                    echo '<input type="hidden" name="UserType" value="' . $this->session->userdata('UserType') . '">';
+                  } ?>
+
+                  <div class="form-group">
+                    <div class="col-sm-offset-5 col-sm-10" style="padding: 15px 0;">
+                      <a href="<?php echo base_url('Booking'); ?>" class="btn btn-space btn-default">Cancel</a>
+                      <button type="submit" class="btn btn-success btn-space">Submit</button>
+                    </div>
+                  </div>
+
+                  <!-- <div data-step="3" class="step-pane">
                   <div class="col-sm-12">
                     <div class="form-group" id="AvailableDocks"></div>
                   </div>
@@ -375,8 +340,8 @@
                       <button type="submit" class="btn btn-success btn-space">Proceed to Book</button>
                     </div>
                   </div>
+                </div> -->
                 </div>
-              </div>
             </form>
           </div>
           <div class="be-spinner">
@@ -389,6 +354,7 @@
     </div>
 
 
+    <?php $this->load->view('add_PoNo'); ?>
     <?php $this->load->view('template/footer'); ?>
     <script src="<?php echo base_url(); ?>assets/lib/fuelux/js/wizard.js" type="text/javascript"></script>
     <script src="<?php echo base_url(); ?>assets/lib/bootstrap-slider/js/bootstrap-slider.js" type="text/javascript"></script>
@@ -396,6 +362,7 @@
     <script src="<?php echo base_url(); ?>assets/lib/jquery.gritter/js/jquery.gritter.js" type="text/javascript"></script>
     <script type="text/javascript">
       $(document).ready(function() {
+
         $('form').parsley();
 
         $(".wizard-ux").wizard(), $(".wizard-ux").on("changed.fu.wizard", function() {
@@ -422,15 +389,6 @@
           $(t).wizard("previous"), e.preventDefault()
         });
 
-        // $('select').select2();
-        var newDateTime = '<div class="col-sm-3"><div data-start-view="2" data-date-hour-disabled="<?php echo implode(', ', $disabledHours); ?>" data-date-format="yyyy-mm-dd hh:00" class="input-group date checkintime"><input size="16" readonly="true" required="true" data-parsley-trigger="keyup" type="text" id="CheckIn" name="CheckInDate" placeholder="Check-In Time" class="form-control"><span class="input-group-addon btn btn-primary"><i class="icon-th mdi mdi-calendar"></i></span></div></div><div class="col-sm-3"><input readonly="true" type="text" id="CheckOut" name="CheckOutDate" placeholder="Check-Out Time" class="form-control"></div>';
-        $('.add-datetime').on("click", function() {
-          if (i < 10) {
-            i++;
-            $('.datetime-field').append(newDateTime);
-          }
-        })
-
         var date = new Date();
         var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
         $(".checkintime").datetimepicker({
@@ -438,7 +396,6 @@
           minTime: 0,
           minView: 1,
           autoclose: !0,
-          // hoursDisabled:'3,4,5,6,7,8',
           componentIcon: ".mdi.mdi-calendar",
           navIcons: {
             rightIcon: "mdi mdi-chevron-right",
@@ -453,7 +410,27 @@
           chkdate.setHours(chkdate.getHours() + 1);
           checkout = moment(chkdate).format("YYYY-MM-DD HH:mm");
           $('#CheckOut').val(checkout);
-          $('#SlotType').trigger('change');
+          var checkInVal = $('#CheckIn').val();
+          var formDataObj = new FormData();
+          formDataObj.append('SlotType', $('#SlotType').val());
+          formDataObj.append('Mode', $('#Mode').val());
+          formDataObj.append('BuildingName', $('#BuildingName').val());
+          formDataObj.append('CheckIn', checkInVal);
+
+          $.ajax({
+            type: 'POST',
+            url: 'getAvailableDocks',
+            data: formDataObj,
+            contentType: false,
+            processData: false,
+            beforeSend: function() {
+              $('.be-loading').addClass('be-loading-active');
+            },
+            success: function(data) {
+              $('.be-loading').removeClass('be-loading-active');
+              $('#pono-available-docks').html(data);
+            }
+          });
         });
 
         Date.prototype.addHours = function(h) {
@@ -567,6 +544,43 @@
             return false;
           }
           $('.be-loading').addClass('be-loading-active');
+        });
+
+        // Add po no
+        $('#save-add-pono').on('click', function() {
+          var poNumber = $('[name="PONumber"').val();
+          var checkInTime = $('#CheckIn').val();
+          var checkOutTime = $('#CheckOut').val();
+          var tableRow = '<tr>';
+          tableRow += '<td class="pono-td">' + poNumber + '</td>';
+          tableRow += '<td class="checkin-checkout-td">' + checkInTime + ' - ' + checkOutTime + '</td>';
+          tableRow += '<td>';
+          tableRow += '<button type="button" class="btn btn-primary edit-pono" data-toggle="modal" data-target="#exampleModal"> Edit </button>';
+          tableRow += '<button type="button" class="btn btn-primary delete-pono" style="margin-left:10px"> Delete </button>';
+          tableRow += '</td>';
+          tableRow += '</tr>';
+          if (poNumber !== '' && checkInTime !== '' && checkOutTime !== '') {
+            $('#pono-table-3 tbody').prepend(tableRow);
+            $('.no-pono').hide();
+          }
+        });
+        $('#pono-table-3').on('click', '.edit-pono', function() {
+          var trEle = $(this).parents('tr');
+          var cIOEle = $(trEle).find('.checkin-checkout-td').text();
+          var cIOArr = cIOEle.split(' - ');
+          var poNumber = $(trEle).find('.pono-td').text();
+          $('[name="PONumber"').val(poNumber);
+          $('#CheckIn').val(cIOArr[0]);
+          $('#CheckOut').val(cIOArr[1]);
+        });
+        $('#pono-table-3').on('click', '.delete-pono', function() {
+          var trEle = $(this).parents('tr');
+          trEle.remove();
+          setTimeout(function() {
+            if ($('#pono-table-3 tbody tr').length === 1) {
+              $('.no-pono').show();
+            }
+          }, 100)
         });
       });
     </script>
