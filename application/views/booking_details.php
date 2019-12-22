@@ -412,8 +412,10 @@
           checkout = moment(chkdate).format("YYYY-MM-DD HH:mm");
           $('#CheckOut').val(checkout);
           var checkInVal = $('#CheckIn').val();
-          if (checkInVal !== '')
+          if (checkInVal !== '') {
             showDockTypes();
+          }
+
         });
 
         Date.prototype.addHours = function(h) {
@@ -618,9 +620,20 @@
               $('#pono-available-docks').empty();
               $('.be-loading').removeClass('be-loading-active');
               $('#pono-available-docks').html(data);
+              var tableRows = $('#pono-table-3 tbody tr');
               if (selectedVal) {
                 $('#dockslots-div').find('[value="' + selectedVal + '"]').attr('checked', true)
               }
+              $.each(tableRows, function() {
+                var trCheckin = $(this).find('.checkin-checkout-td [name="checkinTime[]"]');
+                if (trCheckin.length > 0) {
+                  var checkinStr = trCheckin.val();
+                  if (checkinStr === CheckIn) {
+                    var trCheckin = $(this).find('.docktype-td').find('[name="dockType[]"]').val();
+                    $('#dockslots-div').find('[value="' + trCheckin + '"]').attr('disabled', 'disabled');
+                  }
+                }
+              });
             }
           });
         }
