@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-//ini_set('display_errors', 1);
-//ini_set('display_startup_errors', 1);
-//error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 class Booking extends CI_Controller
 {
 
@@ -179,6 +179,7 @@ class Booking extends CI_Controller
     $data['RefNo'] = $refno;
     $this->load->view('print_booking', $data);
   }
+
   function saveMultiple()
   {
     $this->load->library('ciqrcode');
@@ -187,7 +188,10 @@ class Booking extends CI_Controller
     $data['CompanyUID'] = $this->input->post('DeliveryTo');
     $data['DriverName'] = $this->input->post('Driver');
     $data['VType'] = $this->input->post('VType');
-    $data['AttachedFiles'] = $fileUploaded['file_path'];
+    $data['AttachedFiles'] = '';
+    if ($fileUploaded) {
+      $data['AttachedFiles'] = $fileUploaded['file_path'];
+    }
     $data['VNo'] = $this->input->post('VNumber');
     $data['DONumber'] = $this->input->post('DONumber');
     $data['BuildingName'] = $this->input->post('BuildingName');
@@ -212,8 +216,9 @@ class Booking extends CI_Controller
     $poNumber = $this->input->post('poNumber');
     $checkinTime = $this->input->post('checkinTime');
     $dockType = $this->input->post('dockType');
-
+    $confirm_page_data = array();
     foreach ($poNumber as $key => $value) {
+
       $booked = $this->Booking_model->getMax();
       $data['BookingRefNo'] = 'SATS' . date('Y') . str_pad($booked, 4, '0', STR_PAD_LEFT);
       $params['data'] = 'Job Order No : ' . $data['BookingRefNo'];
@@ -224,14 +229,20 @@ class Booking extends CI_Controller
       $CheckOut = date('Y-m-d H:i', strtotime($checkinTime[$key] . ' +1 hour'));
       $data['CheckIn'] = $checkinTime[$key];
       $data['CheckOut'] = $CheckOut;
-      $store = $this->Booking_model->SaveBooking($data, $dockType[$key]);
+      $slots = array($dockType[$key]);
+      $store = $this->Booking_model->SaveBooking($data, $slots);
       if (!empty($store)) {
-        echo 'Created Successfully';
+        array_push($confirm_page_data, $data['BookingRefNo']);
       }
+    }
+    if (count($confirm_page_data) > 0) {
+      $this->session->set_flashdata('confirm_page_data', implode(',', $confirm_page_data));
+      redirect(base_url('Booking/confirmMultiple/'));
     }
     print_r($data);
     exit;
   }
+
   function save()
   {
     $this->load->library('ciqrcode');
@@ -664,6 +675,13 @@ class Booking extends CI_Controller
     $data['Page'] = 'Booking';
     $data['RefNo'] = $book;
     $this->load->view('booking_confirmed', $data);
+  }
+  function confirmMultiple()
+  {
+    $data['Title'] = 'Booking';
+    $data['Page'] = 'Booking';
+    $data['confirm_page_data'] = $this->session->flashdata('confirm_page_data');
+    $this->load->view('multiple_booking_confirm', $data);
   }
 
   function Verified($book = '', $status)

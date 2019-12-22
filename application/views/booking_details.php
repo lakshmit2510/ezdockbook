@@ -505,6 +505,7 @@
           }
           $('.be-loading').addClass('be-loading-active');
         });
+
         $('#SlotType').change(function() {
           var slotTypeVal = $(this).val();
           if (slotTypeVal || slotTypeVal !== '') {
@@ -513,6 +514,7 @@
             $('#add-pono').prop('disabled', true);
           }
         });
+        $('#SlotType').trigger('change');
         // Add po no
         $('#save-add-pono').on('click', function(e) {
           $('#add-pono-form').parsley().validate();
