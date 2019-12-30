@@ -153,12 +153,23 @@
               <div class="step-content">
                 <input type="hidden" name="VType" id="pVType">
                 <div data-step="1" class="step-pane active">
-                  <div class="form-group add-field">
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">Select Booking Type </label>
+                    <div class="col-sm-2">
+                      <a href="Add" class="btn btn-primary">One Booking</a>
+                    </div>
+                    <div class="col-sm-2">
+                      <a href="addMultiple" class="btn btn-primary">Multiple Booking</a>
+                    </div>
+                    <div class="col-sm-2">
+                      <a href="addBookingC2" class="btn btn-primary">Booking For ICC2</a>
+                    </div>
+                  </div>
+                  <div class="form-group">
                     <label class="col-sm-3 control-label">P.O No / W.O No <span style="color: #ff0000">*</span></label>
                     <div class="col-sm-6">
                       <input type="text" name="PONumber" data-parsley-trigger="keyup" required="true" placeholder="P.O No / W.O No" class="form-control required">
                     </div>
-                    <button type="button" class="btn btn-primary input-add"> + </button>
                   </div>
                   <div class="form-group">
                     <label class="col-sm-3 control-label">D.o Number</label>
@@ -196,7 +207,7 @@
                     <div class="col-sm-6">
                       <select name="BuildingName" data-parsley-trigger="keyup" required="true" id="BuildingName" class="form-control dockselect required">
                         <option value="">--- Choose Building ---</option>
-                        <option value="ICC1 - Admin">Inflight Catering Centre 1 (ICC1)</option>
+                        <option value="ICC1 - Admin" selected>Inflight Catering Centre 1 (ICC1)</option>
                         <!-- <option value="ICC1 - Production">Inflight Catering  Centre 2 (ICC2) - Production</option>
                               <option value="ICC2 - APS">Inflight Catering  Centre 2 (ICC2) - APS</option>
                               <option value="ICC2 - SATS CATERING">Inflight Catering  Centre 2 (ICC2) - SATS CATERING</option> -->
@@ -300,17 +311,14 @@
                   ?>
                   <div class="form-group">
                     <label class="col-sm-3 control-label">Chech-In & Check-Out Time <span style="color: #ff0000">*</span></label>
-                    <div class="datetime-field">
-                      <div class="col-sm-3">
-                        <div data-start-view="2" data-date-hour-disabled="<?php echo implode(', ', $disabledHours); ?>" data-date-format="yyyy-mm-dd hh:00" class="input-group date checkintime">
-                          <input size="16" readonly="true" required="true" data-parsley-trigger="keyup" type="text" id="CheckIn" name="CheckInDate" placeholder="Check-In Time" class="form-control"><span class="input-group-addon btn btn-primary"><i class="icon-th mdi mdi-calendar"></i></span>
-                        </div>
-                      </div>
-                      <div class="col-sm-3">
-                        <input readonly="true" type="text" id="CheckOut" name="CheckOutDate" placeholder="Check-Out Time" class="form-control">
+                    <div class="col-sm-3">
+                      <div data-start-view="2" data-date-hour-disabled="<?php echo implode(', ', $disabledHours); ?>" data-date-format="yyyy-mm-dd hh:00" class="input-group date checkintime">
+                        <input size="16" readonly="true" required="true" data-parsley-trigger="keyup" type="text" id="CheckIn" name="CheckInDate" placeholder="Check-In Time" class="form-control"><span class="input-group-addon btn btn-primary"><i class="icon-th mdi mdi-calendar"></i></span>
                       </div>
                     </div>
-                    <button type="button" class="btn btn-primary add-datetime"> + </button>
+                    <div class="col-sm-3">
+                      <input readonly="true" type="text" id="CheckOut" name="CheckOutDate" placeholder="Check-Out Time" class="form-control">
+                    </div>
                   </div>
                   <!-- <div class="form-group">
                           <label class="col-sm-3 control-label">Building Address</label>
@@ -423,13 +431,6 @@
         });
 
         // $('select').select2();
-        var newDateTime = '<div class="col-sm-3"><div data-start-view="2" data-date-hour-disabled="<?php echo implode(', ', $disabledHours); ?>" data-date-format="yyyy-mm-dd hh:00" class="input-group date checkintime"><input size="16" readonly="true" required="true" data-parsley-trigger="keyup" type="text" id="CheckIn" name="CheckInDate" placeholder="Check-In Time" class="form-control"><span class="input-group-addon btn btn-primary"><i class="icon-th mdi mdi-calendar"></i></span></div></div><div class="col-sm-3"><input readonly="true" type="text" id="CheckOut" name="CheckOutDate" placeholder="Check-Out Time" class="form-control"></div>';
-        $('.add-datetime').on("click", function() {
-          if (i < 10) {
-            i++;
-            $('.datetime-field').append(newDateTime);
-          }
-        })
 
         var date = new Date();
         var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
@@ -568,5 +569,6 @@
           }
           $('.be-loading').addClass('be-loading-active');
         });
+
       });
     </script>

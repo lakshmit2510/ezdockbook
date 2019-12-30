@@ -52,7 +52,7 @@ $bookingct = $this->Common_model->getMax('booking') - 1;
       .be-top-header .navbar-nav>li>a {
         color: #b5121b;
         font-weight: 500;
-        font-size: 17px;
+        font-size: 20px;
         padding: 0px 14px;
       }
       .be-top-header .navbar-nav>li.dropdown .dropdown-menu>li>a {

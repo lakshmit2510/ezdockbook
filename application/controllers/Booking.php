@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 class Booking extends CI_Controller
 {
 
@@ -168,9 +168,43 @@ class Booking extends CI_Controller
     $data['mode'] = $this->Common_model->getTableData('bookingmode', 'Active');
     $data['area'] = $this->Common_model->getTableData('area', 'Active');
     $data['supplierGroupInfo'] = $this->Common_model->getSupplierById($this->session->userdata('SupplierGroupID'));
-    $this->load->view('booking_details', $data);
-    // $this->load->view('add_booking',$data);
+    $this->load->view('add_booking',$data);
   }
+
+  function addMultiple()
+  {
+    if (!in_array($this->session->userdata('Role'), array(1, 2, 3))) {
+      redirect('Dashboard');
+      exit;
+    }
+    $data['Title'] = 'Add New Booking';
+    $data['Page'] = 'Add';
+    $data['vnumber'] = $this->Common_model->getVehcileNo();
+    $data['slottype'] = $this->Common_model->getTableData('slottypes', 'Active');
+    $data['company'] = $this->Common_model->getTableData('company', 'Active');
+    $data['mode'] = $this->Common_model->getTableData('bookingmode', 'Active');
+    $data['area'] = $this->Common_model->getTableData('area', 'Active');
+    $data['supplierGroupInfo'] = $this->Common_model->getSupplierById($this->session->userdata('SupplierGroupID'));
+    $this->load->view('booking_details', $data);
+  }
+
+  function addBookingC2()
+  {
+    if (!in_array($this->session->userdata('Role'), array(1, 2, 3))) {
+      redirect('Dashboard');
+      exit;
+    }
+    $data['Title'] = 'Add New Booking';
+    $data['Page'] = 'Add';
+    $data['vnumber'] = $this->Common_model->getVehcileNo();
+    $data['slottype'] = $this->Common_model->getTableData('slottypes', 'Active');
+    $data['company'] = $this->Common_model->getTableData('company', 'Active');
+    $data['mode'] = $this->Common_model->getTableData('bookingmode', 'Active');
+    $data['area'] = $this->Common_model->getTableData('area', 'Active');
+    $data['supplierGroupInfo'] = $this->Common_model->getSupplierById($this->session->userdata('SupplierGroupID'));
+    $this->load->view('add_new_booking_icc2', $data);
+  }
+
 
   function BPrint($refno)
   {

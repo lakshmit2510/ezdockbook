@@ -12,11 +12,25 @@
             <input type="text" name="PONumber" data-parsley-trigger="keyup" required="true" placeholder="P.O No / W.O No" class="form-control required">
           </div>
         </div>
+        <?php
+        $disabledHours = [];
+        $x = 0;
+        if ($supplierGroupInfo[0]->AvailableTimings != '') {
+          while ($x <= 24) {
+            $availableTimings = explode(',', $supplierGroupInfo[0]->AvailableTimings);
+
+            if (count($availableTimings) > 0 && !in_array($x, $availableTimings)) {
+              array_push($disabledHours, $x);
+            }
+            $x++;
+          }
+        }
+        ?>
         <div class="form-group">
           <label class="col-sm-3 control-label">Chech-In & Check-Out Time <span style="color: #ff0000">*</span></label>
           <div class="datetime-field col-sm-9">
             <div class="col-sm-6">
-              <div data-start-view="2" data-date-format="yyyy-mm-dd hh:00" class="input-group date checkintime">
+              <div data-start-view="2" data-date-hour-disabled="<?php echo implode(', ', $disabledHours); ?>" data-date-format="yyyy-mm-dd hh:00" class="input-group date checkintime">
                 <input size="16" readonly="true" required="true" data-parsley-trigger="keyup" type="text" id="CheckIn" name="CheckInDate" placeholder="Check-In Time" class="form-control"><span class="input-group-addon btn btn-primary"><i class="icon-th mdi mdi-calendar"></i></span>
               </div>
             </div>
