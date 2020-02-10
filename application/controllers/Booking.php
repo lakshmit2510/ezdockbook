@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 class Booking extends CI_Controller
 {
 
@@ -49,10 +49,6 @@ class Booking extends CI_Controller
 
   public function Today()
   {
-    if (!in_array($this->session->userdata('Role'), array(1, 2, 3))) {
-      redirect('Dashboard');
-      exit;
-    }
     $data['Title'] = "Today's Shipments";
     $data['Page'] = 'Today';
     $data['booking'] = $this->Booking_model->getBookingDetail('Today');
@@ -116,6 +112,19 @@ class Booking extends CI_Controller
     $this->load->view('security_booking', $data);
   }
 
+  public function securityC2()
+  {
+    if ($this->session->userdata('Role') <> 7) {
+      redirect('Dashboard');
+      exit;
+    }
+    $data['Title'] = 'Security Check Booking';
+    $data['Page'] = 'BookingList';
+    $data['Users'] = $this->User_model->GetUsers(7);
+    $data['booking'] = $this->Booking_model->getBookingDetail('securityC2');
+    $this->load->view('security_booking', $data);
+  }
+
   public function QCcheck()
   {
     if ($this->session->userdata('Role') <> 6) {
@@ -137,6 +146,18 @@ class Booking extends CI_Controller
     $data['Title'] = 'Warehouse Check Booking';
     $data['Page'] = 'Today';
     $data['booking'] = $this->Booking_model->getBookingDetail('Warehouse');
+    $this->load->view('warehouse_booking', $data);
+  }
+
+  public function warehouseCheckC2()
+  {
+    if ($this->session->userdata('Role') <> 8) {
+      redirect('Dashboard');
+      exit;
+    }
+    $data['Title'] = 'Warehouse Check Booking';
+    $data['Page'] = 'Today';
+    $data['booking'] = $this->Booking_model->getBookingDetail('WarehouseC2');
     $this->load->view('warehouse_booking', $data);
   }
 
@@ -168,7 +189,7 @@ class Booking extends CI_Controller
     $data['mode'] = $this->Common_model->getTableData('bookingmode', 'Active');
     $data['area'] = $this->Common_model->getTableData('area', 'Active');
     $data['supplierGroupInfo'] = $this->Common_model->getSupplierById($this->session->userdata('SupplierGroupID'));
-    $this->load->view('add_booking',$data);
+    $this->load->view('add_booking', $data);
   }
 
   function addMultiple()
@@ -187,24 +208,6 @@ class Booking extends CI_Controller
     $data['supplierGroupInfo'] = $this->Common_model->getSupplierById($this->session->userdata('SupplierGroupID'));
     $this->load->view('booking_details', $data);
   }
-
-  function addBookingC2()
-  {
-    if (!in_array($this->session->userdata('Role'), array(1, 2, 3))) {
-      redirect('Dashboard');
-      exit;
-    }
-    $data['Title'] = 'Add New Booking';
-    $data['Page'] = 'Add';
-    $data['vnumber'] = $this->Common_model->getVehcileNo();
-    $data['slottype'] = $this->Common_model->getTableData('slottypes', 'Active');
-    $data['company'] = $this->Common_model->getTableData('company', 'Active');
-    $data['mode'] = $this->Common_model->getTableData('bookingmode', 'Active');
-    $data['area'] = $this->Common_model->getTableData('area', 'Active');
-    $data['supplierGroupInfo'] = $this->Common_model->getSupplierById($this->session->userdata('SupplierGroupID'));
-    $this->load->view('add_new_booking_icc2', $data);
-  }
-
 
   function BPrint($refno)
   {
@@ -228,7 +231,6 @@ class Booking extends CI_Controller
     }
     $data['VNo'] = $this->input->post('VNumber');
     $data['DONumber'] = $this->input->post('DONumber');
-    $data['BuildingName'] = $this->input->post('BuildingName');
     $data['DeliveryTo'] = $this->input->post('DeliveryTo');
     $data['BookMode'] = $this->input->post('Mode');
     $data['SlotType'] = $this->input->post('SlotType');
@@ -248,6 +250,7 @@ class Booking extends CI_Controller
 
     // Multiple inputs
     $poNumber = $this->input->post('poNumber');
+    $buildingName = $this->input->post('buildingName');
     $checkinTime = $this->input->post('checkinTime');
     $dockType = $this->input->post('dockType');
     $confirm_page_data = array();
@@ -261,6 +264,7 @@ class Booking extends CI_Controller
       $data['QRCode'] = $params['savename'];
       $data['PONumber'] = $value;
       $CheckOut = date('Y-m-d H:i', strtotime($checkinTime[$key] . ' +1 hour'));
+      $data['BuildingName'] = $buildingName[$key];
       $data['CheckIn'] = $checkinTime[$key];
       $data['CheckOut'] = $CheckOut;
       $slots = array($dockType[$key]);
@@ -567,16 +571,16 @@ class Booking extends CI_Controller
         $now = date('Y-m-d H:i:s');
         $datetime1 = strtotime($detail->ActualCheckIn);
         $datetime2 = strtotime($now);
-        if ($now > $detail->ActualCheckIn) // Late CheckIn
-        {
-          $interval  = $datetime2 - $datetime1;
-          $minutes   = round($interval / 60);
-          if ($minutes > 15) {
-            $msg = array('error' => 100, 'Msg' => '<b style="color:red">"LATE ARRIVAL"</b>&nbsp;&nbsp;REFER TO SATS PURCHASING. The Job Order No : <b>' . $RefNo . '</b>');
-            echo json_encode($msg);
-            exit;
-          }
-        }
+        // if ($now > $detail->ActualCheckIn) // Late CheckIn
+        // {
+        //   $interval  = $datetime2 - $datetime1;
+        //   $minutes   = round($interval / 60);
+        //   if ($minutes > 15) {
+        //     $msg = array('error' => 100, 'Msg' => '<b style="color:red">"LATE ARRIVAL"</b>&nbsp;&nbsp;REFER TO SATS PURCHASING. The Job Order No : <b>' . $RefNo . '</b>');
+        //     echo json_encode($msg);
+        //     exit;
+        //   }
+        // }
         $data['WarehouseCheckIn'] = $now;
         $data['status'] = 6;
         $this->Booking_model->updateBooking($data, $detail->BookingID);
@@ -646,7 +650,7 @@ class Booking extends CI_Controller
       echo '';
       exit();
     }
-    $getslot = $this->Booking_model->getSlots($type);
+    $getslot = $this->Booking_model->getSlots($type, $building);
     $booked = $this->Booking_model->bookedSlot($type, $CheckIn, $CheckOut);
 
     $slot = '<h3 align="center" style="margin-top: 0;">Docks Information</h3>';

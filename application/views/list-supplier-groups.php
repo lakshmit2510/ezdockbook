@@ -17,6 +17,7 @@
                         <th>Supplier Group</th>
                         <th>Available Timings</th>
                         <th>Dock Type</th>
+                        <th>Building Name</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -32,6 +33,7 @@
                             <td>'.$row->SupplierGroup.'</td>
                             <td>'.$row->AvailableTimings.'</td>
                             <td>'.$row->Type.'</td>
+                            <td>'.$row->BuildingName.'</td>
                             <td class="center">
                             <a href="'.base_url('Users/editSupplierGroup/'.$row->GroupID).'" class="btn btn-space btn-warning"><i class="icon icon-left mdi mdi-edit"></i> Edit</a>
                             <a href="javascript:void(0);" class="btn btn-space btn-danger delete-group" data-userId="'.$row->GroupID.'"><i class="icon icon-left mdi mdi-delete"></i> Delete</a>

@@ -6,9 +6,31 @@
     </div>
     <div class="modal-body" style="min-height: 430px;padding:20px 5px;">
       <form id="add-pono-form">
-        <div class="form-group add-field" style="margin-bottom:10px;display: flex;align-items: center;">
+        <div class="row form-group">
+          <label class="col-sm-3 control-label">Building Name <span style="color: #ff0000">*</span></label>
+          <div class="col-sm-6">
+            <select name="BuildingName" class="form-control dockselect required" required="true" id="BuildingName">
+              <option value="">--- Choose Building ---</option>
+              <?php
+              if ($supplierGroupInfo[0]->BuildingName != '') {
+
+                if (strpos($supplierGroupInfo[0]->BuildingName, 'ICC1') !== false) {
+                  echo '<option value="ICC1 - Admin">Inflight Catering Centre 1 (ICC1)</option>';
+                }
+                if (strpos($supplierGroupInfo[0]->BuildingName, 'ICC2') !== false) {
+                  echo '<option value="ICC2 - Admin">Inflight Catering Centre 2 (ICC2)</option>';
+                }
+              } else {
+                echo '<option value="ICC1 - Admin">Inflight Catering Centre 1 (ICC1)</option>';
+                echo '<option value="ICC2 - Admin">Inflight Catering Centre 2 (ICC2)</option>';
+              }
+              ?>
+            </select>
+          </div>
+        </div>
+        <div class="row form-group add-field" style="margin-bottom:10px;display: flex;align-items: center;">
           <label class="col-sm-3 control-label">P.O No / W.O No <span style="color: #ff0000">*</span></label>
-          <div class="multiple-puchaseorder-no col-sm-9">
+          <div class="multiple-puchaseorder-no col-sm-6">
             <input type="text" name="PONumber" data-parsley-trigger="keyup" required="true" placeholder="P.O No / W.O No" class="form-control required">
           </div>
         </div>
@@ -26,7 +48,7 @@
           }
         }
         ?>
-        <div class="form-group">
+        <div class="row form-group">
           <label class="col-sm-3 control-label">Chech-In & Check-Out Time <span style="color: #ff0000">*</span></label>
           <div class="datetime-field col-sm-9">
             <div class="col-sm-6">

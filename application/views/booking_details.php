@@ -201,15 +201,6 @@
                     </div>
                   </div>
                   <div class="form-group col-sm-6">
-                    <label class="col-sm-3 control-label">Building Name <span style="color: #ff0000">*</span></label>
-                    <div class="col-sm-6">
-                      <select name="BuildingName" data-parsley-trigger="keyup" required="true" id="BuildingName" class="form-control dockselect required">
-                        <option value="">--- Choose Building ---</option>
-                        <option value="ICC1 - Admin">Inflight Catering Centre 1 (ICC1)</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">Vehicle Number <span style="color: #ff0000">*</span></label>
                     <div class="col-sm-6">
                       <select class="form-control required" data-parsley-trigger="keyup" required="true" id="VNumber" name="VNumber">
@@ -257,7 +248,7 @@
 
                   <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">Docks Type <span style="color: #ff0000">*</span></label>
-                    <div class="col-sm-3">
+                    <div class="col-sm-6">
                       <select class="form-control" required="true" data-parsley-trigger="keyup" name="SlotType" id="SlotType">
                         <option value="">--- Choose Docks Type ----</option>
                         <?php
@@ -296,6 +287,7 @@
                         <thead>
                           <tr>
                             <th>Purchase order No</th>
+                            <th>Bulliding Name</th>
                             <th>CheckIn/CheckOut Datetime</th>
                             <th>DockType</th>
                             <th>Action</th>
@@ -363,6 +355,10 @@
     <script src="<?php echo base_url(); ?>assets/lib/jquery.gritter/js/jquery.gritter.js" type="text/javascript"></script>
     <script type="text/javascript">
       $(document).ready(function() {
+
+        // $('#BuildingName').multiSelect({
+        //   noneText: '--- Choose Building ---'
+        // });
 
         $('form').parsley();
 
@@ -523,6 +519,7 @@
           if ($('#add-pono-form').parsley().isValid()) {
             var isEditActive = $('#pono-table-3 .pono-edit-active');
             var poNumber = $('[name="PONumber"').val();
+            var buildingName = $('#BuildingName').val();
             var checkInTime = $('#CheckIn').val();
             var checkOutTime = $('#CheckOut').val();
             var dockType = '';
@@ -538,6 +535,8 @@
             var tableRow = '<tr>';
             tableRow += '<td class="pono-td">' + poNumber + '</td>';
             tableRow += '<input type="hidden" value="' + poNumber + '" name="poNumber[]"/>';
+            tableRow += '<td class="buildingname-td">' + buildingName + '</td>';
+            tableRow += '<input type="hidden" value="' + buildingName + '" name="buildingName[]"/>';
             tableRow += '<td class="checkin-checkout-td">' + checkInTime + ' - ' + checkOutTime;
             tableRow += '<input type="hidden" value="' + checkInTime + '" name="checkinTime[]"/>';
             tableRow += '</td>';
@@ -570,6 +569,7 @@
         $('#add-pono').on('click', function() {
           $('#pono-table-3 .pono-edit-active').removeClass('pono-edit-active');
           $('[name="PONumber"').val('');
+          $('#BuildingName').val();
           $('#CheckIn').val('');
           $('#CheckOut').val('');
           $('#pono-available-docks').empty();
@@ -582,7 +582,9 @@
           var cIOEle = $(trEle).find('.checkin-checkout-td').text();
           var cIOArr = cIOEle.split(' - ');
           var poNumber = $(trEle).find('.pono-td').text();
+          var buildingName = $(trEle).find('.buildingname-td').text();
           var dockType = $(trEle).find('[name="dockType[]"]').val();
+          $('#BuildingName').val(buildingName);
           $('[name="PONumber"').val(poNumber);
           $('#CheckIn').val(cIOArr[0]);
           $('#CheckOut').val(cIOArr[1]);

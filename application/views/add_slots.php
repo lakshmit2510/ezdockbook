@@ -14,8 +14,8 @@
                         <select name="BuildingName" class="form-control">
                           <option value="">--- Choose Building ---</option>
                           <option value="ICC1 - Admin">Inflight Catering  Centre 1 (ICC1)</option>
-                          <!-- <option value="ICC1 - Production">ICC1 - Production</option>
-                          <option value="ICC2 - APS">ICC2 - APS</option>
+                          <option value="ICC2 - Admin">Inflight Catering  Centre 2 (ICC2)</option>
+                          <!-- <option value="ICC2 - APS">ICC2 - APS</option>
                           <option value="ICC2 - SATS CATERING">ICC2 - SATS CATERING</option> -->
                         </select>
                       </div>

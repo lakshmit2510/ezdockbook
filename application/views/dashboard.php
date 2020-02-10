@@ -60,7 +60,23 @@ $InActiveusr = $this->Dashboard_model->GetUserCount('In-Active');
           </div>
           <div class="row">
           <div class="col-md-12">
-            <p>Dock Management System will help you to reserve your docks in advance with required selections like type of dock and priority of booking. Also this system will show you the currently availability of docks.<br>  Click here to reserve your docks. &nbsp;&nbsp; <?php if(!in_array($this->session->userdata('Role'), array(5,6))) { ?><a href="<?php echo base_url('Booking/Add');?>" class="btn btn-md btn-success">Start New Booking</a><?php } ?></p>
+            <p>Dock Management System will help you to reserve your docks in advance with required selections like type of dock and priority of booking. 
+              Also this system will show you the currently availability of docks.<br>  Click here to reserve your docks. &nbsp;&nbsp; 
+              <?php if(!in_array($this->session->userdata('Role'), array(5,6,7,8))) { ?>
+                <?php if (in_array($this->session->userdata('Role'), array(2, 4))) {  ?>
+                  <?php if ($this->session->userdata('SupplierGroupID') == 1){ ?>
+                    <a href="<?php echo base_url('Multiple_Vendor/addBookingMultipleVendor');?>" class="btn btn-md btn-success">Start New Booking</a>
+                  <?php } 
+                  if ($this->session->userdata('SupplierGroupID') > 1){ ?>
+                    <a href="<?php echo base_url('Booking/addMultiple');?>" class="btn btn-md btn-success">Start New Booking</a>
+                  <?php } 
+                 ?>
+                <?php } ?>
+                <?php if (in_array($this->session->userdata('Role'), array(1, 3))) {  ?>
+                  <a href="<?php echo base_url('Booking/Add');?>" class="btn btn-md btn-success">Start New Booking</a> 
+                <?php } ?>
+              <?php } ?>
+            </p>
             <hr>
             <div class="row">
               <div class="col-md-6">

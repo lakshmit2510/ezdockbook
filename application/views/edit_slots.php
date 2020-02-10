@@ -15,8 +15,8 @@
                         <select name="BuildingName" class="form-control">
                           <option value="">--- Choose Building ---</option>
                           <option value="ICC1 - Admin" <?php if($slots->DBuildingName == 'ICC1 - Admin'){ echo 'selected';}?>>Inflight Catering  Centre 1 (ICC1)</option>
-                          <!-- <option value="ICC1 - Production" <?php if($slots->DBuildingName == 'ICC1 - Production'){ echo 'selected';}?>>ICC1 - Production</option>
-                          <option value="ICC2 - APS" <?php if($slots->DBuildingName == 'ICC2 - APS'){ echo 'selected';}?>>ICC2 - APS</option>
+                          <option value="ICC2 - Admin" <?php if($slots->DBuildingName == 'ICC2 - Admin'){ echo 'selected';}?>>Inflight Catering  Centre 2 (ICC2)</option>
+                          <!-- <option value="ICC2 - APS" <?php if($slots->DBuildingName == 'ICC2 - APS'){ echo 'selected';}?>>ICC2 - APS</option>
                           <option value="ICC2 - SATS CATERING" <?php if($slots->DBuildingName == 'ICC2 - SATS CATERING'){ echo 'selected';}?>>ICC2 - SATS CATERING</option> -->
                         </select>
                       </div>

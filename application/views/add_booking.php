@@ -155,14 +155,14 @@
                 <div data-step="1" class="step-pane active">
                   <div class="form-group">
                     <label class="col-sm-3 control-label">Select Booking Type </label>
-                    <div class="col-sm-2">
+                    <!-- <div class="col-sm-2">
                       <a href="Add" class="btn btn-primary">One Booking</a>
-                    </div>
+                    </div> -->
                     <div class="col-sm-2">
                       <a href="addMultiple" class="btn btn-primary">Multiple Booking</a>
                     </div>
                     <div class="col-sm-2">
-                      <a href="addBookingC2" class="btn btn-primary">Booking For ICC2</a>
+                      <a href="<?php echo base_url('Multiple_Vendor/addBookingMultipleVendor'); ?>" class="btn btn-primary">Multiple Entry Vendor Booking</a>
                     </div>
                   </div>
                   <div class="form-group">
@@ -207,7 +207,20 @@
                     <div class="col-sm-6">
                       <select name="BuildingName" data-parsley-trigger="keyup" required="true" id="BuildingName" class="form-control dockselect required">
                         <option value="">--- Choose Building ---</option>
-                        <option value="ICC1 - Admin" selected>Inflight Catering Centre 1 (ICC1)</option>
+                        <?php
+                        if ($supplierGroupInfo[0]->BuildingName != '') {
+
+                          if (strpos($supplierGroupInfo[0]->BuildingName, 'ICC1') !== false) {
+                            echo '<option value="ICC1 - Admin">Inflight Catering Centre 1 (ICC1)</option>';
+                          }
+                          if (strpos($supplierGroupInfo[0]->BuildingName, 'ICC2') !== false) {
+                            echo '<option value="ICC2 - Admin">Inflight Catering Centre 2 (ICC2)</option>';
+                          }
+                        } else {
+                          echo '<option value="ICC1 - Admin">Inflight Catering Centre 1 (ICC1)</option>';
+                          echo '<option value="ICC2 - Admin">Inflight Catering Centre 2 (ICC2)</option>';
+                        }
+                        ?>
                         <!-- <option value="ICC1 - Production">Inflight Catering  Centre 2 (ICC2) - Production</option>
                               <option value="ICC2 - APS">Inflight Catering  Centre 2 (ICC2) - APS</option>
                               <option value="ICC2 - SATS CATERING">Inflight Catering  Centre 2 (ICC2) - SATS CATERING</option> -->
